@@ -3,6 +3,11 @@ import {defineStore} from "pinia";
 const useUserStore = defineStore('user', {
     state: () => ({
         token: '',
+        userInfo: {
+            id: '',
+            username: '',
+            birth_time: ''
+        }
     }),
     getters: {
 
@@ -12,6 +17,7 @@ const useUserStore = defineStore('user', {
             this.token = token;
         },
     },
+    persist: true
 });
 
 export default useUserStore;

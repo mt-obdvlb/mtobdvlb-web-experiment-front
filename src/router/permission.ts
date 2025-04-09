@@ -14,7 +14,19 @@ console.log(router)
 router.beforeEach((to, from, next) => {
     nprogress.start()
     const token = userStore.token
-    next()
+    if(token) {
+        if(to.path.match('/auth')) {
+            next('/')
+        } else {
+            next()
+        }
+    }else {
+        if(to.path.match('/auth')) {
+            next()
+        } else {
+            next('/auth')
+        }
+    }
 })
 
 router.afterEach(() => {

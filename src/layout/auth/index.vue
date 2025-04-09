@@ -1,10 +1,10 @@
 <template>
-  <div class="relative w-screen  h-screen bg-[url('@/assets/bg.png')] bg-cover bg-center">
-    <div class="absolute backdrop-blur-sm z-0 inset-0 ">
-      <div class="flex justify-center items-center z-10 relative h-full">
-        <div class="bg-amber-50 rounded-sm shadow-xl h-100 w-150 flex ">
-          <router-view/>
-        </div>
+  <div class="relative min-w-screen  min-h-screen  bg-[url('@/assets/bg.png')] bg-cover bg-center">
+<!--    模糊层-->
+    <div class="absolute backdrop-blur-sm z-0 inset-0 "></div>
+    <div class="flex justify-center items-center z-10 relative min-h-screen">
+      <div class="bg-amber-50 rounded-sm shadow-xl h-100 w-1/2 max-[800px]:h-150 transition-all ease-in-out duration-500">
+        <router-view/>
       </div>
     </div>
   </div>
