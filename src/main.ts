@@ -8,6 +8,8 @@ import pinia from '@/store'
 import router from "@/router";
 import '@/router/permission'
 import '@/styles/index.css'
+import 'nprogress/nprogress.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 
 const app = createApp(App)

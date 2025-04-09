@@ -15,6 +15,7 @@ router.beforeEach((to, from, next) => {
     nprogress.start()
     const token = userStore.token
     if(token) {
+        Document.documentE
         if(to.path.match('/auth')) {
             next('/')
         } else {
