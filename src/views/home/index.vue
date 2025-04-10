@@ -2,9 +2,9 @@
   <div class="flex">
     <!--    left-->
     <div class="flex-1 flex justify-center flex-col items-center">
-      <h2 class="text-2xl">欢迎username</h2>
+      <h2 class="text-2xl">欢迎{{userStore.userInfo.username}}</h2>
       <el-card class="mt-20">
-        <img src="https://mtobdvlb-web.oss-cn-beijing.aliyuncs.com/2.png" alt="">
+        <img :src="userStore.userInfo.avatar" alt="">
       </el-card>
     </div>
     <!--    right-->
@@ -15,8 +15,9 @@
 </template>
 
 <script setup lang="ts">
+import useUserStore from "@/store/modules/user";
 
-
+const userStore = useUserStore()
 const date = ref(new Date())
 
 </script>

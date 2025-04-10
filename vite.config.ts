@@ -36,13 +36,5 @@ export default defineConfig({
             }
         }
     },
-    server: {
-        proxy: {
-            '^/user': {
-                target: 'http://localhost:8080',
-                changeOrigin: true,
-                // 不加 rewrite，直接转发 /user 开头的请求
-            },
-        },
-    }
+
 })

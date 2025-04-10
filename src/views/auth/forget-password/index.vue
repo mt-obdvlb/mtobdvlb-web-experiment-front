@@ -24,9 +24,9 @@
           <el-form-item class="form-item bg-red" prop="password">
             <el-input placeholder="请输入密码" class="w-full !h-full" v-model="userForgetPasswordParams.password"/>
           </el-form-item>
-          <el-form-item class="form-item" prop="password_confirmation">
+          <el-form-item class="form-item" prop="passwordConfirmation">
             <el-input placeholder="请再一遍输入密码" class="w-full !h-full"
-                      v-model="userForgetPasswordParams.password_confirmation"/>
+                      v-model="userForgetPasswordParams.passwordConfirmation"/>
           </el-form-item>
 
         </div>
@@ -35,7 +35,7 @@
     <!--    footer-->
     <div class="flex max-[800px]:flex-col flex-shrink-0">
       <div class="w-1/2 block max-[800px]:w-full h-12" to="">
-        <button class="footer-btn !bg-green-500 hover:bg-green-600 " :loading="loading" :disabled="!isFormValid"
+        <button class="footer-btn !bg-green-500 hover:bg-green-600 "  :disabled="!isFormValid"
                 @click="forgetPassword">忘记密码
         </button>
       </div>
@@ -49,11 +49,12 @@
 <script setup lang="ts">
 import type {UserForgetPassword} from "@/api/user/type";
 import {ElMessage} from "element-plus";
+import {reqForgetPassword} from "@/api/user";
 
 const userForgetPasswordParams = ref<UserForgetPassword>({
   username: '',
   password: '',
-  password_confirmation: '',
+  passwordConfirmation: '',
   email: '',
 })
 const formRef = ref()
@@ -64,7 +65,7 @@ const rules = {
   password: [
     {required: true, message: '请输入密码', trigger: 'blur'},
   ],
-  password_confirmation: [
+  passwordConfirmation: [
     {required: true, message: '请输入确认密码', trigger: 'blur'},
     {
       validator(rule, value, callback) {
@@ -81,16 +82,19 @@ const rules = {
     {required: true, message: '请输入邮箱', trigger: 'blur'},
   ],
 }
-let loading = ref(false)
+const router = useRouter()
+
 const isFormValid = computed(() => {
-  return !loading && userForgetPasswordParams.value.username && userForgetPasswordParams.value.password
-      &&  userForgetPasswordParams.value.email && userForgetPasswordParams.value.password_confirmation
+  return userForgetPasswordParams.value.username && userForgetPasswordParams.value.password
+      &&  userForgetPasswordParams.value.email && userForgetPasswordParams.value.passwordConfirmation
 })
 
 const forgetPassword = async () => {
-  loading.value = true
+  console.log(userForgetPasswordParams.value)
   try {
-
+    const res = await reqForgetPassword(userForgetPasswordParams.value)
+    ElMessage.success("找回密码成功!")
+    await router.push('/auth')
   }catch (e) {
     ElMessage.error(e.message)
   }

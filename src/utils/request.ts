@@ -4,7 +4,7 @@ import {ElMessage} from "element-plus";
 
 
 const request = axios.create({
-    baseURL: "",
+    baseURL: "/api",
     timeout: 5000
 });
 
@@ -26,7 +26,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
     response => {
         // 对响应数据做点什么
-        if(response.data.code !== 1) {
+        if(response.data.code !== 200) {
             return Promise.reject(new Error(response.data.msg || 'Error'))
         }
         return response.data;

@@ -1,9 +1,10 @@
 <template>
-  <div class="flex  h-screen w-screen">
-<!--    左边-->
-    <el-aside class="w-200 max-[800px]:absolute  max-[800px]:w-0 max-[800px]:-translate-x-full max-[800px]:opacity-0  transition-all duration-500 ease-in-out">
+  <div class="flex  h-screen w-screen overflow-hidden">
+    <!--    左边-->
+    <div
+        class="w-50 max-[800px]:absolute  max-[800px]:w-0 max-[800px]:-translate-x-full max-[800px]:opacity-0  transition-all duration-500 ease-in-out">
       <el-menu
-          default-active="/home"
+          :default-active="defaultActiveIndex"
           class="min-h-screen"
           @select="handleSelect"
           background-color="#545c64"
@@ -17,10 +18,10 @@
           <span>用户管理</span>
         </el-menu-item>
       </el-menu>
-    </el-aside>
-<!--    right-->
-    <div class="w-full flex-1 flex flex-col  transition duration-500 ease-in-out max-[800px]:w-screen">
-      <el-header class="w-full flex items-center justify-end min-h-20 bg-[var(--primary-darken-color)]">
+    </div>
+    <!--    right-->
+    <div class="w-full h-full flex-1 flex flex-col  transition duration-500 ease-in-out max-[800px]:w-screen">
+      <div class="w-full flex items-center justify-end min-h-20 bg-[var(--primary-darken-color)]">
         <div class="mr-10">
           <el-popover
               placement="bottom-end"
@@ -39,12 +40,14 @@
                   />
                 </el-form-item>
                 <el-form-item label="暗黑模式">
-                  <el-switch @change="changeDark" v-model="dark"  :inactive-icon="MoonNight" :active-icon="Sunny" inline-prompt />
+                  <el-switch @change="changeDark" v-model="dark" :inactive-icon="MoonNight" :active-icon="Sunny"
+                             inline-prompt/>
                 </el-form-item>
               </el-form>
             </template>
             <template #reference>
-              <el-icon class="text-gray-700 !text-3xl shadow border border-gray-300 rounded-full hover:bg-gray-100 cursor-pointer transition p-1" >
+              <el-icon
+                  class="text-gray-700 !text-3xl shadow border border-gray-300 rounded-full hover:bg-gray-100 cursor-pointer transition p-1">
                 <Setting/>
               </el-icon>
             </template>
@@ -52,13 +55,15 @@
         </div>
         <div>
           <el-dropdown
+              teleported
               @mouseenter="isHover = true"
               @mouseleave="isHover = false"
           >
             <template #default>
               <div class="flex items-center cursor-pointer flex-col">
-                <img src="https://mtobdvlb-web.oss-cn-beijing.aliyuncs.com/2.png" alt="avatar" class="rounded-full size-10"/>
-                <span>username</span>
+                <img :src="userStore.userInfo.avatar" alt="avatar"
+                     class="rounded-full size-10"/>
+                <span>{{userStore.userInfo.username}}</span>
                 <el-icon>
                   <component :is="isHover ? ArrowUp : ArrowDown"/>
                 </el-icon>
@@ -67,25 +72,21 @@
             </template>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="router.push('/user-management/profile')">
+                <el-dropdown-item @click="router.push('/user-management')">
                   个人中心
                 </el-dropdown-item>
-                <el-dropdown-item divided>
-                  <el-popconfirm title="确定退出登录吗" @confirm="logout">
-                    <template #reference>
-                      <button>退出登录</button>
-                    </template>
-                  </el-popconfirm>
+                <el-dropdown-item @click="logout" divided>
+                  退出登录
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
 
-      </el-header>
-      <el-main class="w-full bg-[var(--primary-color)]">
+      </div>
+      <div class="pt-30 w-full h-full p-2 bg-[var(--primary-color)]">
         <router-view/>
-      </el-main>
+      </div>
     </div>
   </div>
 </template>
@@ -94,12 +95,20 @@
 import {ArrowDown, ArrowUp, Setting, MoonNight, Sunny} from "@element-plus/icons-vue";
 import useUserStore from "@/store/modules/user";
 import tinycolor from 'tinycolor2'
+import {reqLogout} from "@/api/user";
 
 let isHover = ref(false)
 const router = useRouter()
 const userStore = useUserStore()
 let color = ref(getComputedStyle(document.documentElement).getPropertyValue('--primary-color'))
 let dark = ref(false)
+const defaultActiveIndex = computed(() => {
+  if (router.currentRoute.value.path === '/home') {
+    return '/home'
+  } else {
+    return '/user-management'
+  }
+})
 
 const handleSelect = (index: string) => {
   router.push(index)
@@ -111,6 +120,8 @@ const setColor = (color: string) => {
   document.documentElement.style.setProperty('--primary-color', color)
   document.documentElement.style.setProperty('--primary-active-color', activeColor)
   document.documentElement.style.setProperty('--primary-darken-color', darkenColor)
+  document.documentElement.style.setProperty('--el-color-primary', color)
+
 }
 
 const changeDark = (dark: boolean) => {
@@ -121,10 +132,16 @@ const changeDark = (dark: boolean) => {
   }
 }
 
-const logout = () => {
-  userStore.token = ''
-  userStore.userInfo = {}
-  router.push('/auth')
+const logout = async () => {
+  try {
+    const res = await reqLogout()
+    userStore.token = ''
+    userStore.userInfo = {}
+    ElMessage.success('退出成功')
+    await router.push('/auth')
+  } catch (e) {
+    ElMessage.error(e.message)
+  }
 }
 
 </script>

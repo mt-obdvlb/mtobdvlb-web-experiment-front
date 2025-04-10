@@ -34,12 +34,12 @@ const routes = [
         redirect: '/home',
         children: [
             {
-                path: '/home',
+                path: 'home',
                 name: 'home',
                 component: () => import('@/views/home/index.vue')
             },
             {
-                path: '/user-management',
+                path: 'user-management',
                 name: 'user-management',
                 component: () => import('@/views/user-management/index.vue')
             }

@@ -19,30 +19,31 @@
           <el-form-item class="form-item" prop="email">
             <el-input placeholder="请输入邮箱" class="w-full !h-full" v-model="userRegisterParams.email"/>
           </el-form-item>
-          <el-form-item class="form-item" prop="birth_time">
+          <el-form-item class="form-item" prop="birthTime">
             <el-date-picker
-                v-model="userRegisterParams.birth_time"
+                v-model="userRegisterParams.birthTime"
                 placeholder="请选择出生日期"
                 class="!w-full !h-full"
+
             />
           </el-form-item>
 
         </div>
         <!--      right-->
-        <div class="px-3 main-le w-1/2 max-[800px]:w-full">
-          <el-form-item class=" h-full w-full  max-[800px]:flex-1 py-2" prop="avatar">
+        <div class="px-3 main-le w-1/2  max-[800px]:w-full">
+          <el-form-item class=" h-full overflow-hidden w-full  max-[800px]:flex-1 py-2" prop="avatar">
             <el-upload
                 class=" h-full w-full
-            border-2 border-dashed border-gray-600
+             border-dashed border-gray-600
              flex justify-center items-center rounded-xl
-            "
+            " :class="{'border-2': !userRegisterParams.avatar}"
                 :show-file-list="false"
                 :before-upload="handleBeforeUpload"
                 :on-success="handleUploadSuccess"
-              action=""
+              action="/api/common/upload"
             >
-              <img v-if="userRegisterParams.avatar" :src="userRegisterParams.avatar"  />
-              <el-icon v-else class="" size="large"> <Plus /></el-icon>
+              <img v-if="userRegisterParams.avatar" :src="userRegisterParams.avatar" class="object-cover w-2/3 h-2/3" />
+              <el-icon v-else size="large" class="w-full h-full"> <Plus /></el-icon>
             </el-upload>
           </el-form-item>
         </div>
@@ -61,16 +62,19 @@
 </template>
 
 <script setup lang="ts">
-import User from "@/store/modules/user";
 import {Plus} from '@element-plus/icons-vue'
-
 import {computed} from "vue";
 import {ElMessage} from "element-plus";
+import {reqSave} from "@/api/user";
+import {useRouter} from "vue-router";
+import type {User} from '@/api/user/type'
+import dayjs from 'dayjs'
 
+const router = useRouter()
 const userRegisterParams = ref<User>({
   username: '',
   password: '',
-  birth_time: '',
+  birthTime: '',
   email: '',
   avatar: '',
 })
@@ -92,12 +96,12 @@ let isFormValid = computed(() => {
   return  !(userRegisterParams.value.username && userRegisterParams.value.password)
 })
 
-
 const register = async () => {
   formRef.value?.validate()
-  ElMessage.info('12321')
+  userRegisterParams.value.birthTime = dayjs(userRegisterParams.value.birthTime).format('YYYY-MM-DD')
+  console.log(userRegisterParams.value)
   try {
-    const res: Response = await reqRegister(userRegisterParams.value)
+    const res: Response = await reqSave(userRegisterParams.value)
     ElMessage.success("注册成功")
     await router.push('/auth')
   } catch(e) {
@@ -107,19 +111,20 @@ const register = async () => {
 
 const handleBeforeUpload = (file: File) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  const isLt2M = file.size / 1024 / 1024 < 16;
+  const isLt16M = file.size / 1024 / 1024 < 16;
+  console.log(file)
   if (!isJpgOrPng) {
     ElMessage.error('上传头像图片只能是 JPG/PNG 格式!');
     return false;
   }
-  if (!isLt2M) {
+  if (!isLt16M) {
     ElMessage.error('上传头像图片大小不能超过 16MB!');
   }
-  return isJpgOrPng && isLt2M;
+  return isJpgOrPng && isLt16M;
 }
 
-const handleUploadSuccess = (response: any) => {
-  userRegisterParams.value.avatar = response.data.url
+const handleUploadSuccess = (response: Response<String>) => {
+  userRegisterParams.value.avatar = response.data
 }
 
 </script>

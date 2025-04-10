@@ -76,7 +76,9 @@ const login = async () => {
     userStore.token = res.data.token
     userStore.userInfo.id = res.data.id
     userStore.userInfo.username = res.data.username
-    userStore.userInfo.birth_time = res.data.birth_time
+    userStore.userInfo.birthTime = res.data.birthTime
+    userStore.userInfo.email = res.data.email
+    userStore.userInfo.avatar = res.data.avatar
     ElMessage.success("登录成功")
     await router.push('/')
   } catch(e) {
