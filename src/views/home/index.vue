@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from "@/store/modules/user/user";
+import useUserStore from "@/store/modules/user";
 
 const userStore = useUserStore()
 const date = ref(new Date())

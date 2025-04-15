@@ -19,11 +19,11 @@
       </div>
     </div>
     <el-table :data="contactList">
-      <el-table-column type="index"  label="序号"></el-table-column>
+      <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="date" label="日期"></el-table-column>
       <el-table-column prop="name" label="名字"></el-table-column>
       <el-table-column prop="province" label="省份"></el-table-column>
-      <el-table-column prop="city"  label="城市"></el-table-column>
+      <el-table-column prop="city" label="城市"></el-table-column>
       <el-table-column prop="address" show-overflow-tooltip label="地址"></el-table-column>
       <el-table-column prop="postcode" label="邮编"></el-table-column>
       <el-table-column label="操作">
@@ -50,7 +50,7 @@
 
     </div>
     <el-dialog :title="contactParams.id ? '修改联系人': '新增联系人'" v-model="dialogVisible" @close="reset">
-      <el-form ref="formRef" :model="contactParams" :rules="rules" >
+      <el-form ref="formRef" :model="contactParams" :rules="rules">
         <el-form-item label="日期" prop="date">
           <el-date-picker
               v-model="contactParams.date"
@@ -62,12 +62,12 @@
           <el-input v-model="contactParams.name"></el-input>
         </el-form-item>
         <el-form-item label="省份" prop="provinceId">
-          <el-select v-model="provinceId" placeholder="请选择省份" @change="handleProvinceSelect" >
+          <el-select v-model="provinceId" placeholder="请选择省份" @change="handleProvinceSelect">
             <el-option
-              v-for="item in provinces"
-              :key="item.id"
-              :value="item.id"
-              :label="item.name"
+                v-for="item in provinces"
+                :key="item.id"
+                :value="item.id"
+                :label="item.name"
             />
           </el-select>
         </el-form-item>
@@ -87,25 +87,26 @@
         <el-form-item label="邮编" prop="postcode">
           <el-input v-model="contactParams.postcode"></el-input>
         </el-form-item>
-<!--        <el-form-item label="头像" prop="avatar">-->
-<!--          <el-upload-->
-<!--              class=" size-50-->
-<!--             border-dashed border-gray-600-->
-<!--             flex justify-center items-center rounded-xl-->
-<!--            " :class="{'border-2': !contactParams.avatar}"-->
-<!--              :show-file-list="false"-->
-<!--              :before-upload="handleBeforeUpload"-->
-<!--              :on-success="handleUploadSuccess"-->
-<!--              action="/api/common/upload"-->
-<!--          >-->
-<!--            <img v-if="contactParams.avatar" :src="contactParams.avatar" class="object-cover w-2/3 h-2/3"/>-->
-<!--            <el-icon v-else size="large" class="w-full h-full">-->
-<!--              <Plus/>-->
-<!--            </el-icon>-->
-<!--          </el-upload>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="头像" prop="avatar">-->
+        <!--          <el-upload-->
+        <!--              class=" size-50-->
+        <!--             border-dashed border-gray-600-->
+        <!--             flex justify-center items-center rounded-xl-->
+        <!--            " :class="{'border-2': !contactParams.avatar}"-->
+        <!--              :show-file-list="false"-->
+        <!--              :before-upload="handleBeforeUpload"-->
+        <!--              :on-success="handleUploadSuccess"-->
+        <!--              action="/api/common/upload"-->
+        <!--          >-->
+        <!--            <img v-if="contactParams.avatar" :src="contactParams.avatar" class="object-cover w-2/3 h-2/3"/>-->
+        <!--            <el-icon v-else size="large" class="w-full h-full">-->
+        <!--              <Plus/>-->
+        <!--            </el-icon>-->
+        <!--          </el-upload>-->
+        <!--        </el-form-item>-->
         <el-form-item>
-          <el-button type="primary" @click="addOrSaveContact">{{ contactParams.id ? '修改联系人' : '新增联系人'}}</el-button>
+          <el-button type="primary" @click="addOrSaveContact">{{ contactParams.id ? '修改联系人' : '新增联系人' }}
+          </el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -121,13 +122,13 @@ import {
   reqContactGetById,
   reqContactPage,
 } from "@/api/contact";
-import useUserStore from "@/store/modules/user/user";
+import useUserStore from "@/store/modules/user";
 import {Edit, Delete} from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 import {ElMessage} from "element-plus";
 import {Contact, ContactPageQuery} from "@/api/contact/type";
-import {Province,City} from "@/api/common/type";
-import {reqProvinces,reqCities} from "@/api/common";
+import {Province, City} from "@/api/common/type";
+import {reqProvinces, reqCities} from "@/api/common";
 
 
 const userStore = useUserStore()
@@ -153,23 +154,22 @@ const contactParams = ref<Contact>({
 })
 const rules = {
   name: [
-      { required: true, message: '请输入联系人名', trigger: 'blur' },
+    {required: true, message: '请输入联系人名', trigger: 'blur'},
   ],
   email: [
-      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+    {required: true, message: '请输入邮箱地址', trigger: 'blur'},
+    {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
   ],
-  date: [
-  ],
+  date: [],
   province: [
-      { required: true, message: '请选择省份', trigger: 'change' }
+    {required: true, message: '请选择省份', trigger: 'change'}
   ],
   city: [
-      { required: true, message: '请选择城市', trigger: 'change' }
+    {required: true, message: '请选择城市', trigger: 'change'}
   ],
   postcode: [
-      { required: true, message: '请输入邮编', trigger: 'blur' },
-      { min: 6, max: 6, message: '长度为6位邮编', trigger: 'blur' }
+    {required: true, message: '请输入邮编', trigger: 'blur'},
+    {min: 6, max: 6, message: '长度为6位邮编', trigger: 'blur'}
   ]
 }
 let provinces = ref<Array<Province>>([])
@@ -186,7 +186,7 @@ const getContactList = async () => {
   console.log(contactList.value)
 }
 
-onMounted( async () => {
+onMounted(async () => {
   const res = await reqProvinces()
   provinces.value = res.data
   await getContactList()

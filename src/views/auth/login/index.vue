@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import {UserLogin} from "@/api/user/type";
 import {ElMessage} from "element-plus";
-import useUserStore from "@/store/modules/user/user";
+import useUserStore from "@/store/modules/user";
 import {reqLogin} from "@/api/user";
 
 const userLoginParams = ref<User>({

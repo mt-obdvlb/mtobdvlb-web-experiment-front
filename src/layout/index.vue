@@ -75,7 +75,7 @@
             </template>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="router.push('/contact')">
+                <el-dropdown-item @click="goAbout">
                   个人中心
                 </el-dropdown-item>
                 <el-dropdown-item @click="logout" divided>
@@ -96,7 +96,7 @@
 
 <script setup lang="ts">
 import {ArrowDown, ArrowUp, Setting, MoonNight, Sunny} from "@element-plus/icons-vue";
-import useUserStore from "@/store/modules/user/user";
+import useUserStore from "@/store/modules/user";
 import tinycolor from 'tinycolor2'
 import {reqLogout} from "@/api/user";
 
@@ -145,6 +145,11 @@ const logout = async () => {
   } catch (e) {
     ElMessage.error(e.message)
   }
+}
+
+const goAbout = () => {
+  const userId = userStore.userInfo.id
+  router.push(`/about/${userId}`)
 }
 
 </script>
