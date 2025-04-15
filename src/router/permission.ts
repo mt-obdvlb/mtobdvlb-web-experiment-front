@@ -1,4 +1,4 @@
-import useUserStore from "@/store/modules/user";
+import useUserStore from "@/store/modules/user/user";
 import nprogress from 'nprogress'
 import router from "./index";
 

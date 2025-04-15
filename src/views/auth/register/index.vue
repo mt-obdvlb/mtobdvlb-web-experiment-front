@@ -42,7 +42,7 @@
                 :on-success="handleUploadSuccess"
               action="/api/common/upload"
             >
-              <img v-if="userRegisterParams.avatar" :src="userRegisterParams.avatar" class="object-cover w-2/3 h-2/3" />
+              <img v-if="userRegisterParams.avatar" :src="userRegisterParams.avatar" class="object-cover w-1/3 h-1/3" />
               <el-icon v-else size="large" class="w-full h-full"> <Plus /></el-icon>
             </el-upload>
           </el-form-item>

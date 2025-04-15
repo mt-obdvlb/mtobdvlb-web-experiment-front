@@ -24,7 +24,7 @@ export interface UserPageQuery {
     end?: string
 }
 
-export interface UserLoginRes {
+export interface UserLoginResponse {
     id: number | string,
     username: string,
     token: string,

@@ -14,8 +14,11 @@
         <el-menu-item index="/home" class="menu-router-item">
           <span class="">首页</span>
         </el-menu-item>
-        <el-menu-item index="/user-management" class="menu-router-item">
-          <span>用户管理</span>
+        <el-menu-item index="/contact" class="menu-router-item">
+          <span>联系人管理</span>
+        </el-menu-item>
+        <el-menu-item index="/article" class="menu-router-item">
+          <span>文章管理</span>
         </el-menu-item>
       </el-menu>
     </div>
@@ -72,7 +75,7 @@
             </template>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="router.push('/user-management')">
+                <el-dropdown-item @click="router.push('/contact')">
                   个人中心
                 </el-dropdown-item>
                 <el-dropdown-item @click="logout" divided>
@@ -93,7 +96,7 @@
 
 <script setup lang="ts">
 import {ArrowDown, ArrowUp, Setting, MoonNight, Sunny} from "@element-plus/icons-vue";
-import useUserStore from "@/store/modules/user";
+import useUserStore from "@/store/modules/user/user";
 import tinycolor from 'tinycolor2'
 import {reqLogout} from "@/api/user";
 
@@ -106,7 +109,7 @@ const defaultActiveIndex = computed(() => {
   if (router.currentRoute.value.path === '/home') {
     return '/home'
   } else {
-    return '/user-management'
+    return '/contact'
   }
 })
 

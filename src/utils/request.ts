@@ -1,5 +1,5 @@
 import axios from "axios";
-import useUserStore from "@/store/modules/user";
+import useUserStore from "@/store/modules/user/user";
 import {ElMessage} from "element-plus";
 
 

@@ -26,7 +26,7 @@
           <el-input placeholder="请输入用户名" class="w-full !h-full" v-model="userLoginParams.username" />
         </el-form-item>
         <el-form-item class="form-item" prop="password">
-          <el-input placeholder="请输入密码" class="w-full !h-full" v-model="userLoginParams.password" />
+          <el-input placeholder="请输入密码" type="password" class="w-full !h-full" v-model="userLoginParams.password" />
         </el-form-item>
         <el-form-item class="form-item">
           <el-button type="primary" class="w-full !h-full" :disabled="!isFormValid" :loading="loading" @click="login">登录</el-button>
@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import {UserLogin} from "@/api/user/type";
 import {ElMessage} from "element-plus";
-import useUserStore from "@/store/modules/user";
+import useUserStore from "@/store/modules/user/user";
 import {reqLogin} from "@/api/user";
 
 const userLoginParams = ref<User>({
